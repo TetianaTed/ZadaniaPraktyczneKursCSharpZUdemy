@@ -25,54 +25,104 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
         static void Menu()
         {
-            Console.WriteLine("Witam w ksiace telefonicznej. Proszę wybierz jedna z ponizszych opcji wprowadzajac odpowiednia liczbe: \n" +
-                "1 - Dodaj kontakt;\n" +
-                "2 - Wyswietl kontakt na podstawie numeru;\n" +
-                "3 - Wyswietl wszystkie kontakty;\n" +
-                "4 - Wyszukac kontakty dla danej nazwy.\n");
+            int choosedOptionNumber;
 
-            string wybranaOpcja = Console.ReadLine();
-            bool TryParseWybranaOpcja;
-            int wybranaOpcjaLiczbowa;
-            TryParseWybranaOpcja = int.TryParse(wybranaOpcja, out wybranaOpcjaLiczbowa);
-            if (wybranaOpcjaLiczbowa == 1)
+            do
             {
-                DodajKontakt();
-            }
+                Console.WriteLine("Witam w ksiace telefonicznej. Proszę wybierz jedna z ponizszych opcji wprowadzajac odpowiednia liczbe: \n" +
+                    "1 - Dodaj kontakt;\n" +
+                    "2 - Wyswietl kontakt na podstawie numeru;\n" +
+                    "3 - Wyswietl wszystkie kontakty;\n" +
+                    "4 - Wyszukac kontakty dla danej nazwy.\n" +
+                    "0 - Wyjscie z programu");
+
+                string choosedOption = Console.ReadLine();
+                bool succeedParseChossedOption;
+                succeedParseChossedOption = int.TryParse(choosedOption, out choosedOptionNumber);
+                if (choosedOptionNumber == 1)
+                {
+                    AddContact();
+                }
+                else if (choosedOptionNumber == 2)
+                {
+                    ShowContactByNumber();
+                }
+                else if (choosedOptionNumber == 3)
+                {
+                    ShowAllContacts();
+                }
+                else if (choosedOptionNumber == 4)
+                {
+                    ShowContactByName();
+                }
+            } while (choosedOptionNumber != 0);
+
         }
 
-        static void DodajKontakt()
+        private static void AddContact()
         {
             Console.WriteLine("Wprowadz prosze nazwe kontaktu.");
 
-            string nazwaKontaktu = Console.ReadLine();
+            string contactName = Console.ReadLine();
 
             Console.WriteLine("Prosze wprowadz numer telefonu");
 
-            string numerTelefonu = Console.ReadLine();
+            string contactNumber = Console.ReadLine();
 
-            List<Contact> primeNumbers = new List<Contact>()
-            { new Contact(name: "Ola", phoneNumber: "52325698745"),
-              new Contact(name: "Marcin", phoneNumber: "126455")
-              };
+            Contact cretedContact = new Contact(contactName, contactNumber);
 
-            Console.WriteLine(primeNumbers.First().Name); //primeNumbers.First() = this w klasie contact, bo dzialam na obiekcie Ola
-
-            Console.WriteLine(primeNumbers.First()); // Console.WriteLine(primeNumbers.First().ToString()); ToString() robi sie domyslnie
-
-            Contact contact = new Contact(name: "Michal", phoneNumber: "123456789");
-            contact.ToString(); //  contact.ToString() = this w klasie contact, bo dzialam na obiekcie Michal
-            Contact testtik = Contact.Test("testowyString"); //jak statyczna metoda to nazwaklasy.nazwa metody. Nie wylolalam na obiekcie, nie bylo new. Nie bylo inicjilizacji obiektu, to nie ma this.
-            Console.WriteLine(testtik);
-
-            Console.WriteLine(primeNumbers.First().ToString());
-
-            /*
-            primeNumbers.Add(1,5);
-            primeNumbers.Add(1); // adding elements using add() method
-            primeNumbers.Add(3);
-            */
-
+            PhoneContact.Add(cretedContact);
         }
+
+       private  static void ShowContactByNumber()
+        {
+            Console.WriteLine("Proszę podaj numer telefonu");
+
+            string inputUserPhoneNumber = Console.ReadLine();
+
+            Contact? foundContact = PhoneContact.FindByNumber(inputUserPhoneNumber);
+
+            if (foundContact == null)
+            {
+                Console.WriteLine($"Nie znaleziono kontaktu o numerze {inputUserPhoneNumber}");
+            }
+            else
+            {
+                Console.WriteLine($"Numer {inputUserPhoneNumber} nalezy do {foundContact.Name}.");
+            }
+        }
+
+        private static void ShowAllContacts()
+        {
+            List<Contact> foundAllContacts = PhoneContact.FindAll();
+
+            foreach (var contact in foundAllContacts)
+            {
+                Console.WriteLine(contact);
+            }
+        }
+
+        private static void ShowContactByName()
+        {
+            Console.WriteLine("Proszę podaj nazwe kontaktu");
+
+            string inputName = Console.ReadLine();
+
+            List<Contact> foundContacts = PhoneContact.FindByName(inputName);
+
+            if (foundContacts.Count == 0)
+            {
+                Console.WriteLine($"Nie znaleziono kontaktu o nazwie {inputName}");
+            }
+            else
+            {
+                foreach (var contact in foundContacts)
+                {
+                    Console.WriteLine($"Numer {contact.PhoneNumber} nalezy do {contact.Name}.");
+                }
+                
+            }
+        }
+
     }
 }
