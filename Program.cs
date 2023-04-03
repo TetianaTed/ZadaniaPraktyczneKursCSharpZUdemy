@@ -34,6 +34,7 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
                     "2 - Wyswietl kontakt na podstawie numeru;\n" +
                     "3 - Wyswietl wszystkie kontakty;\n" +
                     "4 - Wyszukac kontakty dla danej nazwy.\n" +
+                    "5 - Zmien dane kontaktowe. \n" +
                     "0 - Wyjscie z programu");
 
                 string choosedOption = Console.ReadLine();
@@ -55,6 +56,10 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
                 {
                     ShowContactByName();
                 }
+                else if (choosedOptionNumber == 5)
+                {
+                    UpdateContact();
+                }
             } while (choosedOptionNumber != 0);
 
         }
@@ -74,7 +79,7 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
             PhoneContact.Add(cretedContact);
         }
 
-       private  static void ShowContactByNumber()
+        private static void ShowContactByNumber()
         {
             Console.WriteLine("Proszę podaj numer telefonu");
 
@@ -120,8 +125,85 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
                 {
                     Console.WriteLine($"Numer {contact.PhoneNumber} nalezy do {contact.Name}.");
                 }
-                
+
             }
+        }
+
+        private static void UpdateContact()
+        {
+            Console.WriteLine("Jezeli chcesz zmienic numer telefonu, prosze wybierz 1, a jezeli nazwe kontaktu, to prosze wprowadz 2");
+            int choosedOptionNumber;
+            string choosedOption = Console.ReadLine();
+            bool succeedParseChossedOption;
+            succeedParseChossedOption = int.TryParse(choosedOption, out choosedOptionNumber);
+            if (choosedOptionNumber == 1)
+            {
+                UpdateContactNumber();
+            }
+            else if (choosedOptionNumber == 2)
+            {
+                UpdateContactName();
+
+            }
+            else throw new Exception("Wprowadzano bledna opcje");
+        }
+
+        private static void UpdateContactNumber()
+        {
+
+            Console.WriteLine("Proszę podaj nazwe kontaktu do zmiany");
+
+            string inputOldName = Console.ReadLine();
+
+            InternalUpdateContact(inputOldName: inputOldName);
+        }
+
+        private static void UpdateContactName()
+        {
+            Console.WriteLine("Proszę podaj numer telefonu do zmiany");
+
+            string inputOldNumber = Console.ReadLine();
+
+            InternalUpdateContact(inputOldNumber: inputOldNumber);
+        }
+
+        private static void UpdateContactByNumberAndName()
+        {
+            Console.WriteLine("Proszę podaj nazwe kontaktu do zmiany");
+
+            string inputOldName = Console.ReadLine();
+
+            Console.WriteLine("Proszę podaj numer telefonu do zmiany");
+
+            string inputOldNumber = Console.ReadLine();
+
+            InternalUpdateContact(inputOldName, inputOldNumber);
+        }
+
+        private static void InternalUpdateContact(string? inputOldName = null, string? inputOldNumber = null)
+        {
+            Console.WriteLine("Podaj nazwe kontaktu, jezeli nie chcesz zmieniac kontakt to nacisnij enter");
+
+            string newInputName = Console.ReadLine();
+
+            Console.WriteLine("Podaj numer kontaktu, jezeli nie chcesz zmieniac numer to nacisnij enter");
+
+            string newInputNumber = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(newInputName))
+            {
+                newInputName = inputOldName;
+            }
+            if (string.IsNullOrWhiteSpace(newInputNumber))
+            {
+                newInputNumber = "-1";
+            }
+
+            Contact contactToSave = new Contact(newInputName, newInputNumber);
+
+            Contact oldContact = new Contact(inputOldName, inputOldNumber);
+
+            PhoneContact.UpdateContactNumber(oldContact, contactToSave);
         }
 
     }

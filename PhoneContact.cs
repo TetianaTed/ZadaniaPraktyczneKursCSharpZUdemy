@@ -53,5 +53,56 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
             }
             return foundContacts;
         }
+
+        public static void UpdateContactNumber(Contact oldContact, Contact newContact)
+        {
+            IList<Contact> foundContacts = new List<Contact>();
+
+            foreach (var contact in contacts)
+            {
+                if (!string.IsNullOrWhiteSpace(oldContact.Name) && contact.Name.Equals(oldContact.Name,StringComparison.OrdinalIgnoreCase))
+                {
+                    foundContacts.Add(contact);
+                }
+                if (!string.IsNullOrWhiteSpace(oldContact.PhoneNumber) && 
+                                              (contact.PhoneNumber.Equals(oldContact.PhoneNumber, StringComparison.OrdinalIgnoreCase) 
+                                                && !oldContact.PhoneNumber.Equals("-1")))
+                {
+                    foundContacts.Add(contact);
+                }
+            }
+
+
+            if (foundContacts.Count == 0)
+            {
+                Console.WriteLine($"Nie znaleziono kontaktu o nazwie {inputName}");
+            }
+            else
+            {
+                foreach (var contact in foundContacts)
+                {
+                    Console.WriteLine($"Numer {contact.PhoneNumber} nalezy do {contact.Name}.");
+                    Console.WriteLine($"Wprowadz nowy numer dla kontaktu {contact.Name}");
+                    string inputNewNumber = Console.ReadLine();
+
+                    Contact updatedContact = new Contact(inputName, inputNewNumber);
+
+                    PhoneContact.UpdateContactNumber(contact, updatedContact);
+
+                }
+
+            }
+
+            Contact? foundContact = FindByNumber(oldContact.PhoneNumber);
+            if (foundContact == null)
+            {
+                contacts.Remove(oldContact);
+                contacts.Add(newContact);
+            }
+            else
+            {
+                Console.WriteLine($"Nie mozna poprawic kontakt, blad danych.");
+            }
+        }
     }
 }
