@@ -14,13 +14,14 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
         Wyświetlić kontakt na podstawie numeru
         Wyświetlić wszystkie kontakty
         Wyszukać kontakty dla danej nazwy
+        Aktualizwac kontakty na podstawie numeru lub nazwy (jedna z opcji).
+        Dodatkowo nalezy sprawdzac kontakt. Kazdy kontakt musi posiadac unikalna nazwe i unikalny numer. 
+
         */
 
         static void Main(string[] args)
         {
             Menu();
-
-
         }
 
         static void Menu()
@@ -155,7 +156,13 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
             string inputOldName = Console.ReadLine();
 
-            InternalUpdateContact(inputOldName: inputOldName);
+            Console.WriteLine("Podaj nowy numer kontaktu");
+
+            string newInputNumber = Console.ReadLine();
+
+            Contact contactToSave = new Contact(inputOldName, newInputNumber);
+
+            PhoneContact.UpdateContactByName(contactToSave);
         }
 
         private static void UpdateContactName()
@@ -164,7 +171,13 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
             string inputOldNumber = Console.ReadLine();
 
-            InternalUpdateContact(inputOldNumber: inputOldNumber);
+            Console.WriteLine("Podaj nowa nazwe kontaktu");
+
+            string newInputName = Console.ReadLine();
+
+            Contact contactToSave = new Contact(newInputName, inputOldNumber);
+
+            PhoneContact.UpdateContactByNumber(contactToSave);
         }
 
         private static void UpdateContactByNumberAndName()
