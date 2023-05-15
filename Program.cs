@@ -77,7 +77,16 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
             Contact cretedContact = new Contact(contactName, contactNumber);
 
-            PhoneContact.Add(cretedContact);
+            OperationResult result = PhoneContact.Add(cretedContact);
+
+            if (result.IsError())
+            {
+                Console.WriteLine(result.ErrorMessage);
+            }
+            else
+            {
+                Console.WriteLine("Dodano nowy kontakt.");
+            }
         }
 
         private static void ShowContactByNumber()
@@ -162,7 +171,16 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
             Contact contactToSave = new Contact(inputOldName, newInputNumber);
 
-            PhoneContact.UpdateContactByName(contactToSave);
+            OperationResult result = PhoneContact.UpdateContactByName(contactToSave);
+
+            if (result.IsError())
+            {
+                Console.WriteLine(result.ErrorMessage);
+            }
+            else
+            {
+                Console.WriteLine($"Kontakt o nazwie {contactToSave.Name} zostal zaktualizowany.");
+            }
         }
 
         private static void UpdateContactName()
@@ -177,7 +195,16 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
             Contact contactToSave = new Contact(newInputName, inputOldNumber);
 
-            PhoneContact.UpdateContactByNumber(contactToSave);
+            OperationResult result = PhoneContact.UpdateContactByNumber(contactToSave);
+
+            if (result.IsError())
+            {
+                Console.WriteLine(result.ErrorMessage);
+            }
+            else
+            {
+                Console.WriteLine($"Kontakt z numerem {contactToSave.PhoneNumber} zostal zaktualizowany.");
+            }
         }
     }
 }

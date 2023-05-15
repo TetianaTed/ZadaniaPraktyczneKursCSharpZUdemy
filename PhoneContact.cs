@@ -11,20 +11,19 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
     {
         private static List<Contact> contacts = new List<Contact>();
 
-        public static void Add(Contact newContact)
+        public static OperationResult Add(Contact newContact)
         {
             string validationResult = ValidateCreate(newContact);
 
             if (!string.IsNullOrEmpty(validationResult))
-            {
-                Console.WriteLine("Dodanie kontaktu nie jest mozliwe. Szczegóły: " + validationResult);
-                return;
+            {              
+                return new OperationResult("Dodanie kontaktu nie jest mozliwe. Szczegóły: " + validationResult);
             }
 
             contacts.Add(newContact);
 
-            Console.WriteLine("Dodano nowy kontakt.");
-
+            return OperationResult.Success();
+            
         }
 
         public static Contact? FindByNumber(string contactNumber)
@@ -58,51 +57,46 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
         }
 
         
-        public static void UpdateContactByName(Contact newContact)
+        public static OperationResult UpdateContactByName(Contact newContact)
         {
             string validationResult = ValidateUpdateByName(newContact);
 
             if (!string.IsNullOrEmpty(validationResult))
             {
-                Console.WriteLine("Aktualizacja nie jest mozliwa. Szczegóły: " + validationResult);
-                return;
+                return new OperationResult("Aktualizacja nie jest mozliwa. Szczegóły: " + validationResult);
             }
 
             Contact? foundContact = FindByName(newContact.Name).FirstOrDefault();
 
             if (foundContact == null)
             {
-                Console.WriteLine($"Nie znaleziono kontaktu z nazwa {newContact.Name}");
-                return;
+                return new OperationResult($"Nie znaleziono kontaktu z nazwa {newContact.Name}");
             }
 
             foundContact.PhoneNumber = newContact.PhoneNumber;
 
-            Console.WriteLine($"Kontakt o nazwie {newContact.Name} zostal zaktualizowany.");
-
+            return OperationResult.Success();
         }
 
-        public static void UpdateContactByNumber(Contact newContact)
+        public static OperationResult UpdateContactByNumber(Contact newContact)
         {
             string validationResult = ValidateUpdateByNumber(newContact);
 
             if (!string.IsNullOrEmpty(validationResult))
             {
-                Console.WriteLine("Aktualizacja nie jest mozliwa. Szczegóły: " + validationResult);
-                return;
+                return new OperationResult("Aktualizacja nie jest mozliwa. Szczegóły: " + validationResult);
             }
 
             Contact? foundContact = FindByNumber(newContact.PhoneNumber);
 
             if (foundContact == null)
             {
-                Console.WriteLine($"Nie znaleziono kontaktu z numerem {newContact.PhoneNumber}");
-                return;
+                return new OperationResult($"Nie znaleziono kontaktu z numerem {newContact.PhoneNumber}");
             }
 
             foundContact.Name = newContact.Name;
 
-            Console.WriteLine($"Kontakt z numerem {newContact.PhoneNumber} zostal zaktualizowany.");
+            return OperationResult.Success();
         }
 
         /* Warunki walidacji:
