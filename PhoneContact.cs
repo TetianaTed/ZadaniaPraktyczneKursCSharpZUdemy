@@ -13,15 +13,18 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
         public static void Add(Contact newContact)
         {
-            Contact? foundContact = FindByNumber(newContact.PhoneNumber);
-            if (foundContact == null)
+            string validationResult = ValidateCreate(newContact);
+
+            if (!string.IsNullOrEmpty(validationResult))
             {
-                contacts.Add(newContact);
+                Console.WriteLine("Dodanie kontaktu nie jest mozliwe. Szczegóły: " + validationResult);
+                return;
             }
-            else
-            {
-                Console.WriteLine($"Nie mozna dodac kontaktu, poniewaz kontakt o podanym numerze {newContact.PhoneNumber} istnieje.");
-            }
+
+            contacts.Add(newContact);
+
+            Console.WriteLine("Dodano nowy kontakt.");
+
         }
 
         public static Contact? FindByNumber(string contactNumber)
@@ -54,6 +57,7 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
             return foundContacts;
         }
 
+        
         public static void UpdateContactByName(Contact newContact)
         {
             string validationResult = ValidateUpdateByName(newContact);
@@ -101,75 +105,6 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
             Console.WriteLine($"Kontakt z numerem {newContact.PhoneNumber} zostal zaktualizowany.");
         }
 
-
-        public static void UpdateContactNumber(Contact oldContact, Contact newContact)
-        {
-            string updateValidationResult = null; // ValidateUpdate(newContact);
-
-            if (!updateValidationResult.Equals(string.Empty))
-            {
-                Console.WriteLine("Blad walidacji: " + updateValidationResult);
-                return; //return; nie wykonuje ponizszego kodu metody
-            }
-
-            if (!newContact.Name.Equals(string.Empty))
-            {
-                List<Contact> foundContacts = FindByName(newContact.Name);
-                if (foundContacts.Count == 1)
-                {
-                    Contact foundContact = foundContacts.First();
-                }
-            }
-            else if (!newContact.PhoneNumber.Equals(string.Empty))
-            {
-                Contact? foundContacts = FindByNumber(newContact.PhoneNumber);
-                if (foundContacts != null)
-                {
-                    Contact foundContact = foundContacts;
-                }
-            }
-            else
-            {
-                throw new Exception("Shoud never happened");
-            }
-            /*
-            IList<Contact> foundContacts = new List<Contact>();
-
-            if (foundContacts.Count == 0)
-            {
-                Console.WriteLine($"Nie znaleziono kontaktu o nazwie {inputName}");
-            }
-            else
-            {
-                foreach (var contact in foundContacts)
-                {
-                    Console.WriteLine($"Numer {contact.PhoneNumber} nalezy do {contact.Name}.");
-                    Console.WriteLine($"Wprowadz nowy numer dla kontaktu {contact.Name}");
-                    string inputNewNumber = Console.ReadLine();
-
-                    Contact updatedContact = new Contact(inputName, inputNewNumber);
-
-                    PhoneContact.UpdateContactNumber(contact, updatedContact);
-
-                }
-
-            }
-            
-
-            Contact? foundContact = FindByNumber(oldContact.PhoneNumber);
-            if (foundContact == null)
-            {
-                contacts.Remove(oldContact);
-                contacts.Add(newContact);
-            }
-            else
-            {
-                Console.WriteLine($"Nie mozna poprawic kontakt, blad danych.");
-            }
-            */
-        }
-
-
         /* Warunki walidacji:
          * Nazwa kontaktu ma byc unikalna
          * Numer kontaktu musi byc unikalny
@@ -177,17 +112,22 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
         private static string ValidateUpdateByNumber(Contact newContact)
         {
-            string technicalValidationResult = ValidateTechnicalUpdate(newContact);
+            string technicalValidationResult = ValidateTechnical(newContact);
 
             if (!string.IsNullOrEmpty(technicalValidationResult))
             {
                 return technicalValidationResult;
             }
 
-            Contact? foundContact = FindByNumber(newContact.PhoneNumber);
+            Contact? foundContact = FindByName(newContact.Name).FirstOrDefault();
             if (foundContact != null)
             {
-                return "Taki numer telefonu juz istnieje";
+                return "Taka nazwa kontaktu juz istnieje";
+            }
+
+            if (FindByNumber(newContact.PhoneNumber) == null)
+            {
+                return $"Nie znaleziono kontaktu o numerze {newContact.PhoneNumber}";
             }
 
             return string.Empty;
@@ -195,24 +135,29 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
         private static string ValidateUpdateByName(Contact newContact)
         {
-            string technicalValidationResult = ValidateTechnicalUpdate(newContact);
+            string technicalValidationResult = ValidateTechnical(newContact);
 
             if (!string.IsNullOrEmpty(technicalValidationResult))
             {
                 return technicalValidationResult;
             }
-         
-            Contact? foundContact = FindByName(newContact.Name).FirstOrDefault();
+ 
+            Contact? foundContact = FindByNumber(newContact.PhoneNumber);
             if (foundContact != null)
             {
-                return "Taka nazwa kontaktu juz istnieje";
+                return "Taki numer telefonu juz istnieje";
+            }
+            
+            if (FindByName(newContact.Name).Count == 0)
+            {
+                return $"Nie znaleziono kontaktu o nazwie {newContact.Name}";      
             }
 
             return string.Empty;
 
         }
 
-        private static string ValidateTechnicalUpdate(Contact newContact)
+        private static string ValidateTechnical(Contact newContact)
         {
             if (newContact == null)
             {
@@ -224,6 +169,30 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
             }
 
             return string.Empty;
+        }
+
+        private static string ValidateCreate(Contact newContact)
+        {
+            string technicalValidationResult = ValidateTechnical(newContact);
+
+            if (!string.IsNullOrEmpty(technicalValidationResult))
+            {
+                return technicalValidationResult;
+            }
+
+            Contact? foundContactNumber = FindByNumber(newContact.PhoneNumber);
+            if (foundContactNumber != null)
+            {
+                return "Taki numer telefonu juz istnieje";
+            }
+
+            Contact? foundContactName = FindByName(newContact.Name).FirstOrDefault();
+            if (foundContactName != null)
+            {
+                return "Taka nazwa kontaktu juz istnieje";
+            }
+            return string.Empty;
+
         }
     }
 }

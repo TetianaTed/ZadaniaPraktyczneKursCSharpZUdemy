@@ -179,45 +179,5 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
             PhoneContact.UpdateContactByNumber(contactToSave);
         }
-
-        private static void UpdateContactByNumberAndName()
-        {
-            Console.WriteLine("Proszę podaj nazwe kontaktu do zmiany");
-
-            string inputOldName = Console.ReadLine();
-
-            Console.WriteLine("Proszę podaj numer telefonu do zmiany");
-
-            string inputOldNumber = Console.ReadLine();
-
-            InternalUpdateContact(inputOldName, inputOldNumber);
-        }
-
-        private static void InternalUpdateContact(string? inputOldName = null, string? inputOldNumber = null)
-        {
-            Console.WriteLine("Podaj nazwe kontaktu, jezeli nie chcesz zmieniac kontakt to nacisnij enter");
-
-            string newInputName = Console.ReadLine();
-
-            Console.WriteLine("Podaj numer kontaktu, jezeli nie chcesz zmieniac numer to nacisnij enter");
-
-            string newInputNumber = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(newInputName))
-            {
-                newInputName = inputOldName;
-            }
-            if (string.IsNullOrWhiteSpace(newInputNumber))
-            {
-                newInputNumber = "-1";
-            }
-
-            Contact contactToSave = new Contact(newInputName, newInputNumber);
-
-            Contact oldContact = new Contact(inputOldName, inputOldNumber);
-
-            PhoneContact.UpdateContactNumber(oldContact, contactToSave);
-        }
-
     }
 }
