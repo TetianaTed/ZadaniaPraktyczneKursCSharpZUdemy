@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ZadaniaPraktyczneKursCSharpZUdemy
 {
-    internal class Contact
+    public class Contact
     {
         public string Name {get; set;}  
 

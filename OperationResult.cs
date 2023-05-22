@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZadaniaPraktyczneKursCSharpZUdemy
 {
-    internal class OperationResult
+    public class OperationResult
     {
         public string ErrorMessage { get; private set; }
 

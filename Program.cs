@@ -109,7 +109,7 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
         private static void ShowAllContacts()
         {
-            List<Contact> foundAllContacts = PhoneContact.FindAll();
+            IList<Contact> foundAllContacts = PhoneContact.FindAll();
 
             foreach (var contact in foundAllContacts)
             {
@@ -123,7 +123,7 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
             string inputName = Console.ReadLine();
 
-            List<Contact> foundContacts = PhoneContact.FindByName(inputName);
+            IList<Contact> foundContacts = PhoneContact.FindByName(inputName);
 
             if (foundContacts.Count == 0)
             {

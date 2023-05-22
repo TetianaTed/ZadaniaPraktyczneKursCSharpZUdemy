@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ZadaniaPraktyczneKursCSharpZUdemy
 {
-    internal class PhoneContact
+    public class PhoneContact
     {
-        private static List<Contact> contacts = new List<Contact>();
+        private static IList<Contact> contacts = new List<Contact>();
 
         public static OperationResult Add(Contact newContact)
         {
@@ -38,12 +38,12 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
             return null;
         }
 
-        public static List<Contact> FindAll()
+        public static IList<Contact> FindAll()
         {
             return contacts;
         }
 
-        public static List<Contact> FindByName(string inputName)
+        public static IList<Contact> FindByName(string inputName)
         {
             List<Contact> foundContacts = new List<Contact>();
             foreach (var contact in contacts)
