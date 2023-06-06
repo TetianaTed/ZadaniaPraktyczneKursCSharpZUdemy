@@ -45,7 +45,36 @@ namespace PhoneContact.Tests
                                         .PhoneNumber;
             Assert.Equal("5555555", actualPhoneNumber);
         }
-        
+
+        [Fact]
+        public void Should_Update_Contact_By_Number()
+        {
+            //Arrange
+            Contact arrangeContact = new Contact("Ben", "0125689");
+            Contact arrangeContact2 = new Contact("Did", "7856");
+
+            OperationResult arrangeOperationResult = ZadaniaPraktyczneKursCSharpZUdemy.PhoneContact.Add(arrangeContact);
+            OperationResult arrangeOperationResult2 = ZadaniaPraktyczneKursCSharpZUdemy.PhoneContact.Add(arrangeContact2);
+
+            Assert.True(arrangeOperationResult.IsSuccess());
+            Assert.True(arrangeOperationResult2.IsSuccess());
+
+            int arrangeContactInDatabaseCounter = ZadaniaPraktyczneKursCSharpZUdemy.PhoneContact.FindAll().Count;
+            Assert.Equal(2, arrangeContactInDatabaseCounter);
+
+            Contact arrangeContact3 = new Contact("Tom", "7856");
+
+            //Act 
+            OperationResult operationResultUpdate = ZadaniaPraktyczneKursCSharpZUdemy.PhoneContact.UpdateContactByNumber(arrangeContact3);
+
+            //Assert
+            Assert.True(operationResultUpdate.IsSuccess());
+            string? actualPhoneName = ZadaniaPraktyczneKursCSharpZUdemy.PhoneContact.FindAll()
+                                        .SingleOrDefault(contact => contact.PhoneNumber.Equals("7856"))?
+                                        .Name;
+            Assert.Equal("Tom", actualPhoneName);
+        }
+
         //Zadanie domowe: dorobic testy na walidacje (jest podobny do add.)
     }
 }

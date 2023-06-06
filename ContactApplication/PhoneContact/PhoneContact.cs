@@ -28,14 +28,9 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
         public static Contact? FindByNumber(string contactNumber)
         {
-            foreach (var contact in contacts)
-            {
-                if (contact.PhoneNumber.Equals(contactNumber, StringComparison.OrdinalIgnoreCase))
-                {
-                    return contact;
-                }
-            }
-            return null;
+            return contacts
+                .Where(contact => contact.PhoneNumber.Equals(contactNumber, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
         }
 
         public static IList<Contact> FindAll()
@@ -45,17 +40,8 @@ namespace ZadaniaPraktyczneKursCSharpZUdemy
 
         public static IList<Contact> FindByName(string inputName)
         {
-            List<Contact> foundContacts = new List<Contact>();
-            foreach (var contact in contacts)
-            {
-                if (contact.Name.Contains(inputName,StringComparison.OrdinalIgnoreCase))                  
-                {
-                    foundContacts.Add(contact);                    
-                }
-            }
-            return foundContacts;
+            return contacts.Where(contact => contact.Name.Contains(inputName, StringComparison.OrdinalIgnoreCase)).ToList();
         }
-
         
         public static OperationResult UpdateContactByName(Contact newContact)
         {
