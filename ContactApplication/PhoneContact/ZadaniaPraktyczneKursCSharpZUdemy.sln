@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZadaniaPraktyczneKursCSharpZUdemy", "ZadaniaPraktyczneKursCSharpZUdemy.csproj", "{BD2A0831-0A29-4D50-80D2-3DD81BD1FEE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneContact.Tests", "..\PhoneContact.Tests\PhoneContact.Tests\PhoneContact.Tests.csproj", "{E926A308-5B16-4FDB-AB48-DB87CACA83CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneContact.Tests", "..\PhoneContact.Tests\PhoneContact.Tests.csproj", "{E926A308-5B16-4FDB-AB48-DB87CACA83CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
